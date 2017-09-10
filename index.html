@@ -5,19 +5,19 @@
 	<link href="stylesheets/reset.css" type="text/css" rel="stylesheet">
 	<link href="stylesheets/styles.css" type="text/css" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto+Slab:700" rel="stylesheet">
-	<title>ideabox</title>
+	<title>IdeaBox</title>
 </head>
 <body>
-	<header>
+	<header aria-label="Text field container">
 		<h1>idea<span>box</span></h1>
 		<form>
-			<input aria-label="input idea title" class="title-input" type="text" placeholder=" Title">
-			<textarea aria-label="input idea body" rows="10" columns="5" class="idea-input" type="text" placeholder=" Body"></textarea>
-			<button aria-label="save" class="save-button">save</button>
+			<input class="title-input" type="text" placeholder=" Title" aria-label="input idea title">
+			<textarea rows="10" columns="5" class="idea-input" type="text" placeholder=" Body" aria-label="input idea body"></textarea>
+			<button class="save-button" aria-label="save">save</button>
 		</form>
 	</header>
 	<main>
-		<input aria-label="search" class="search" type="text" placeholder=" Search">
+		<input class="search" type="text" placeholder=" Search" aria-label="input search query">
 		<section>
 			<!-- cards prepend here -->
 		</section>
