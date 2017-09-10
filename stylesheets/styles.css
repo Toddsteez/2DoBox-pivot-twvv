@@ -84,7 +84,7 @@ h2, .edit-title {
 	font-weight: 700;
 }
 
-h2, .idea-body {
+h2, .task-body {
 	overflow-wrap: break-word;
 }
 
@@ -113,7 +113,7 @@ hr {
 	margin-top: 27px;
 }
 
-.idea-body, .idea-title {
+.task-body, .task-title {
 	cursor: pointer;
 }
 
