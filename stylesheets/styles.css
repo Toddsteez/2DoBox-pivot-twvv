@@ -55,7 +55,7 @@ section {
 	width: 582px;
 }
 
-.title-input, .idea-input, .save-button, .search {
+.title-input, .task-input, .save-button, .search {
 	border: 1.5px solid #d1d3d4;
 	display: block;
 	font-size: 22.5px;
@@ -86,7 +86,7 @@ h2, .edit-title {
 	font-weight: 700;
 }
 
-h2, .idea-body {
+h2, .task-body {
 	overflow-wrap: break-word;
 }
 
@@ -99,7 +99,7 @@ h5 {
 	font-family: Roboto Slab;
 }
 
-p, .edit-idea {
+p, .edit-task {
 	color: #939598;
 	font-family: Open Sans;
 	font-size: 21px;
@@ -115,7 +115,7 @@ hr {
 	margin-top: 27px;
 }
 
-.idea-body, .idea-title {
+.task-body, .task-title {
 	cursor: pointer;
 }
 
@@ -210,11 +210,11 @@ textarea {
 		margin-bottom: 12px;
 	}
 	
-	.idea-input {
+	.task-input {
 		height: 82px;
 	}
 
-	.title-input, .idea-input, .save-button, .search {
+	.title-input, .task-input, .save-button, .search {
 		margin-left: 0;
 		margin-right: 0;
 		padding: 0;
