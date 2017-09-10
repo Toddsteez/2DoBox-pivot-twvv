@@ -61,16 +61,18 @@ $('section').on('focusout', '.edit-title', editTitleSave);
 
 $('section').on('focusout', '.edit-idea', editIdeaSave);
 
-$('section').on('keyup', '.edit-title', function(e) {
-	if (e.keyCode === 13) {
+$('section').on('keyup', '.edit-title', function(e, event) {
+	// if (e.keyCode === 13) { //removed if statement
+		event.preventDefault();
 		$(this).blur();
-	}
+	// }
 });
 
-$('section').on('keyup', '.edit-idea', function(e) {
-	if (e.keyCode === 13) {
+$('section').on('keyup', '.edit-idea', function(e, event) {
+	// if (e.keyCode === 13) {  //removed if statement 
+		event.preventDefault();
 		$(this).blur();
-	}
+	// }
 });
 
 $('.search').on('keyup', realtimeSearch)
