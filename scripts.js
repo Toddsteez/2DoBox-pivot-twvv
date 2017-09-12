@@ -10,6 +10,7 @@ var TaskCard = function(title, task, id = Date.now(), quality = 0) {
 	this.task = task;
 	this.id = id; 
 	this.quality = quality;
+	this.complete = false;
 };
 
 //connects the quailty index to the string in that index
@@ -218,18 +219,11 @@ function realtimeSearch() {
 	});
 };
 
-
-
-function completeBtn() {
-	$(".completed-task").click(function(){
-	    $(".task-title").wrap("<del>");
-    
-})
-
-} 
-
-
-
+function completeBtn(e) {
+	e.preventDefault();
+	$(this).closest('article').wrap("<del>");
+	sendToLocalStorage();
+};
 
 
 
