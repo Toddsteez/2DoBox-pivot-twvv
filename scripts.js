@@ -5,37 +5,37 @@ $(document).ready(function() {
 });
 
 //constructor function and prototypes
-var TaskCard = function(title, task, id = Date.now(), quality = 0) {
+var TaskCard = function(title, task, id = Date.now(), importance = 0) {
 	this.title = title;
 	this.task = task;
 	this.id = id; 
-	this.quality = quality;
+	this.importance = importance;
 	this.complete = false;
 };
 
 //connects the quailty index to the string in that index
-TaskCard.prototype.qualityString = function() {
-	var qualityArray = ['swill', 'plausible', 'genius'];
-	return qualityArray[this.quality]; //this = TaskCard
+TaskCard.prototype.importanceString = function() {
+	var importanceArray = ['Critical', 'High', 'Normal', 'Low', 'None'];
+	return importanceArray[this.importance]; //this = TaskCard
 };
 
-//increments the quality value
-TaskCard.prototype.qualityIncrement = function() { 
-	if (this.quality < 2) {
-		this.quality++;
+//increments the importance value
+TaskCard.prototype.importanceIncrement = function() { 
+	if (this.importance < 4) {
+		this.importance++;
 	}
 };
 
-//decrements the quality value
-TaskCard.prototype.qualityDecrement = function() {
-	if (this.quality > 0) {
-		this.quality--;
+//decrements the importance value
+TaskCard.prototype.importanceDecrement = function() {
+	if (this.importance > 0) {
+		this.importance--;
 	}
 };
 
-//checks for matches in title, body and quality in the search input
+//checks for matches in title, body and importance in the search input
 TaskCard.prototype.doYouMatch = function(searchTerm) {
-	if (this.title.toUpperCase().includes(searchTerm) || this.task.toUpperCase().includes(searchTerm) || this.qualityString().toUpperCase().includes(searchTerm)) {
+	if (this.title.toUpperCase().includes(searchTerm) || this.task.toUpperCase().includes(searchTerm) || this.importanceString().toUpperCase().includes(searchTerm)) {
 		return true;
 	} else {
 		return false;
@@ -94,8 +94,8 @@ function extractCard(elementInsideArticle) {
 	var title = $('.task-title', article).text();
 	var task = $('.task-body', article).text();
 	var id = article.data('id');
-	var quality = $('.quality-span', article).data('quality');
-	var taskCard = new TaskCard(title, task, id, quality);
+	var importance = $('.importance-span', article).data('importance');
+	var taskCard = new TaskCard(title, task, id, importance);
 	return taskCard;
 };
 
@@ -104,7 +104,7 @@ function populateCard(taskCard) {
 	var newTitle = taskCard.title;
 	var newTask = taskCard.task;
 	var newId = taskCard.id;
-	var newQuality = taskCard.qualityString();
+	var newImportance = taskCard.importanceString();
 	return (`<article data-id="${newId}" class="task-card">  
 				<div class="h2-wrapper">
 					<h2 class="task-title">${newTitle}</h2>
@@ -115,7 +115,7 @@ function populateCard(taskCard) {
 					</button>
 				</div>
 				<p class="task-body">${newTask}</p>
-				<div class="quality-wrapper">
+				<div class="importance-wrapper">
 					<button class="upvote-button">
 						<div class="upvote-front">
 							<img src="assets/upvote.svg">
@@ -126,25 +126,25 @@ function populateCard(taskCard) {
 							<img src="assets/downvote.svg">
 						</div>
 					</button>
-					<h5 class="quality">quality: <span data-quality="${taskCard.quality}" class="quality-span">${newQuality}</span></h5>
+					<h5 class="importance">importance: <span data-importance="${taskCard.importance}" class="importance-span">${newImportance}</span></h5>
 					<button class="completed-task">Completed Task</button>
 				</div>
 				<hr>
 			</article>`);
 };
 
-//replaces the quality string and saves quality
+//replaces the importance string and saves importance
 function upvoteCard() {
  	var taskCard = extractCard(this);
-	taskCard.qualityIncrement();
+	taskCard.importanceIncrement();
 	$(this).closest('article').replaceWith(populateCard(taskCard));
 	sendToLocalStorage();
 };
 
-//replaces quality string and saves quality
+//replaces importance string and saves importance
 function downvoteCard() {
  	var taskCard = extractCard(this);
-	taskCard.qualityDecrement();
+	taskCard.importanceDecrement();
 	$(this).closest('article').replaceWith(populateCard(taskCard));
 	sendToLocalStorage();
 };
@@ -194,7 +194,7 @@ function sendToLocalStorage() {
 function getStoredCards() {
 	var retrievedCards = JSON.parse(localStorage.getItem("storedCards")) || [];
 	retrievedCards.forEach(function (retrievedCard) {
-		var taskCard = new TaskCard(retrievedCard.title, retrievedCard.task, retrievedCard.id, retrievedCard.quality);
+		var taskCard = new TaskCard(retrievedCard.title, retrievedCard.task, retrievedCard.id, retrievedCard.importance);
 		$('section').append(populateCard(taskCard)); 
 	});
 };
@@ -223,6 +223,19 @@ function completeBtn(e) {
 	e.preventDefault();
 	$(this).closest('article').wrap("<del>");
 	sendToLocalStorage();
+};
+
+function importanceSearch() {
+	var searchTerm = $('.criticalBtn')
+	$('.bottom-container').on('click', '.criticalBtn', importanceSearch)
+	$('article').each(function (index, element) {
+		var taskCard = extractCard(element);
+		if (taskCard.doYouMatch(searchTerm)) {
+			$(element).removeClass('card-display-none');
+		} else {
+			$(element).addClass('card-display-none');
+		};
+	});
 };
 
 
