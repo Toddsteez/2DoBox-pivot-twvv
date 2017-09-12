@@ -75,6 +75,8 @@ $('section').on('keyup', '.edit-task', function(e) {
 
 $('.search').on('keyup', realtimeSearch)
 
+$('.bottom-container').on('click', '.completed-task', completeBtn) //Adding new function
+
 //collects title and body, runs constructor
 function formSubmit() {
 	var title = $('.title-input').val();
@@ -124,6 +126,7 @@ function populateCard(taskCard) {
 						</div>
 					</button>
 					<h5 class="quality">quality: <span data-quality="${taskCard.quality}" class="quality-span">${newQuality}</span></h5>
+					<button class="completed-task">Completed Task</button>
 				</div>
 				<hr>
 			</article>`);
@@ -214,3 +217,20 @@ function realtimeSearch() {
 		};
 	});
 };
+
+
+
+function completeBtn() {
+	$(".completed-task").click(function(){
+	    $(".task-title").wrap("<del>");
+    
+})
+
+} 
+
+
+
+
+
+
+
