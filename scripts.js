@@ -5,7 +5,7 @@ $(document).ready(function() {
 });
 
 //constructor function and prototypes
-var TaskCard = function(title, task, id = Date.now(), importance = 0) {
+var TaskCard = function(title, task, id = Date.now(), importance = 0, complete = false) {
 	this.title = title;
 	this.task = task;
 	this.id = id; 
@@ -104,7 +104,8 @@ function extractCard(elementInsideArticle) {
 	var task = $('.task-body', article).text();
 	var id = article.data('id');
 	var importance = $('.importance-span', article).data('importance');
-	var taskCard = new TaskCard(title, task, id, importance);
+	var complete = $(article).hasClass('card-display-none');
+	var taskCard = new TaskCard(title, task, id, importance, complete);
 	return taskCard;
 };
 
@@ -114,7 +115,7 @@ function populateCard(taskCard) {
 	var newTask = taskCard.task;
 	var newId = taskCard.id;
 	var newImportance = taskCard.importanceString();
-	return (`<article data-id="${newId}" class="task-card">  
+	return (`<article id="${newId}" class="task-card">  
 				<div class="h2-wrapper">
 					<h2 class="task-title">${newTitle}</h2>
 					<button class="delete-button">
@@ -209,7 +210,7 @@ function getStoredCards() {
 	});
 };
 
-//resets inpus and focus after save
+//resets inputs and focus after save
 function resetHeader() {
 	$('.title-input').focus();
 	$('.title-input').val('');
@@ -231,9 +232,16 @@ function realtimeSearch() {
 
 function completeBtn(e) {
 	e.preventDefault();
-	$(this).closest('article').wrap("<del>");
+	$(this).closest('article').wrap("<del>").addClass('card-display-none');
 	sendToLocalStorage();
+	console.log($(this).closest('article').attr('id'));
 };
+
+function completePersist(e) {
+var completePersist = $(e.target).attr('id');
+sendToLocalStorage();
+}
+
 
 function translateImportance(buttonClass) {
 	var importanceClicked;
