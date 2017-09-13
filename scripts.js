@@ -35,6 +35,7 @@ TaskCard.prototype.importanceDecrement = function() {
 
 //checks for matches in title, body and importance in the search input
 TaskCard.prototype.doYouMatch = function(searchTerm) {
+	debugger
 	if (this.title.toUpperCase().includes(searchTerm) || this.task.toUpperCase().includes(searchTerm) || this.importanceString().toUpperCase().includes(searchTerm)) {
 		return true;
 	} else {
@@ -77,6 +78,14 @@ $('section').on('keyup', '.edit-task', function(e) {
 $('.search').on('keyup', realtimeSearch)
 
 $('.bottom-container').on('click', '.completed-task', completeBtn) //Adding new function
+
+$('.criticalBtn').on('click', importanceSearch)
+$('.highBtn').on('click', importanceSearch)
+$('.normalBtn').on('click', importanceSearch)
+$('.lowBtn').on('click', importanceSearch)
+$('.noneBtn').on('click', importanceSearch)
+$('.displayBtn').on('click', importanceSearch)
+
 
 //collects title and body, runs constructor
 function formSubmit() {
@@ -150,6 +159,7 @@ function downvoteCard() {
 };
 
 function deleteCard(e) {
+	console.log('lol')
 	e.preventDefault();
 	$(this).closest('article').remove();
 	sendToLocalStorage();
@@ -225,12 +235,31 @@ function completeBtn(e) {
 	sendToLocalStorage();
 };
 
-function importanceSearch() {
-	var searchTerm = $('.criticalBtn')
-	$('.bottom-container').on('click', '.criticalBtn', importanceSearch)
+function translateImportance(buttonClass) {
+	var importanceClicked;
+	if (buttonClass === 'criticalBtn') {
+		importanceClicked = 0;
+	} else if (buttonClass === 'highBtn') {
+		importanceClicked = 1;
+	}  else if (buttonClass === 'normalBtn') {
+	  	importanceClicked = 2;
+	}	else if (buttonClass === 'lowBtn') {
+		importanceClicked = 3;
+	} 	else if (buttonClass === 'noneBtn') {
+		importanceClicked = 4;
+	}	else if (buttonClass === 'displayBtn') {
+		imprtanceClicked = (0, 1, 2, 3, 4)
+	}
+	return importanceClicked;
+	} 
+
+
+function importanceSearch(e) { 
+	var buttonClass = $(e.target).attr('class')
+	var importanceClicked  = translateImportance(buttonClass)
 	$('article').each(function (index, element) {
 		var taskCard = extractCard(element);
-		if (taskCard.doYouMatch(searchTerm)) {
+		if (taskCard.importance === importanceClicked) {
 			$(element).removeClass('card-display-none');
 		} else {
 			$(element).addClass('card-display-none');
