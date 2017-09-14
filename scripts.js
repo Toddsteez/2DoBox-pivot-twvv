@@ -5,13 +5,17 @@ $(document).ready(function() {
 });
 
 //constructor function and prototypes
-var TaskCard = function(title, task, id = Date.now(), importance = 0) {
+var TaskCard = function(title, task, id = Date.now(), importance = 0, complete = false) {
 	this.title = title;
 	this.task = task;
 	this.id = id; 
 	this.importance = importance;
-	this.complete = false;
+	this.complete = complete;
 };
+
+TaskCard.prototype.finishTask = function() {
+	 return this.complete = !this.complete;
+}
 
 //connects the quailty index to the string in that index
 TaskCard.prototype.importanceString = function() {
@@ -77,7 +81,7 @@ $('section').on('keyup', '.edit-task', function(e) {
 
 $('.search').on('keyup', realtimeSearch)
 
-$('.bottom-container').on('click', '.completed-task', completeBtn) //Adding new function
+$('.bottom-container').on('click', '.completed-task', completeTask) //Adding new function
 
 $('.criticalBtn').on('click', importanceSearch)
 $('.highBtn').on('click', importanceSearch)
@@ -85,6 +89,9 @@ $('.normalBtn').on('click', importanceSearch)
 $('.lowBtn').on('click', importanceSearch)
 $('.noneBtn').on('click', importanceSearch)
 $('.displayBtn').on('click', importanceSearch)
+
+// $('.displayBtn').on('click', displayComplete)
+
 
 
 //collects title and body, runs constructor
@@ -104,7 +111,8 @@ function extractCard(elementInsideArticle) {
 	var task = $('.task-body', article).text();
 	var id = article.data('id');
 	var importance = $('.importance-span', article).data('importance');
-	var taskCard = new TaskCard(title, task, id, importance);
+	var complete = article.data('status');
+	var taskCard = new TaskCard(title, task, id, importance, complete);
 	return taskCard;
 };
 
@@ -114,7 +122,8 @@ function populateCard(taskCard) {
 	var newTask = taskCard.task;
 	var newId = taskCard.id;
 	var newImportance = taskCard.importanceString();
-	return (`<article data-id="${newId}" class="task-card">  
+	var newComplete = taskCard.complete; 
+	return (`<article data-status="${newComplete}" data-id="${newId}" class="task-card">  
 				<div class="h2-wrapper">
 					<h2 class="task-title">${newTitle}</h2>
 					<button class="delete-button">
@@ -159,11 +168,21 @@ function downvoteCard() {
 };
 
 function deleteCard(e) {
-	console.log('lol')
 	e.preventDefault();
 	$(this).closest('article').remove();
 	sendToLocalStorage();
 };
+
+function completeTask(e) {
+	e.preventDefault();
+	var thisArticlesId = $(this).closest('article').data('id');
+	var taskCard = extractCard(this);
+	taskCard.finishTask();
+	$(this).closest('article').replaceWith(populateCard(taskCard))
+	$(".bottom-container").find(`[data-id='${thisArticlesId}']`).wrap("<del>").addClass('card-display-none');
+	sendToLocalStorage();
+
+}
 
 //edits and saves title and task
 function editTitle() {
@@ -171,6 +190,7 @@ function editTitle() {
 	$('h2', article).replaceWith(`<textarea class="task-title edit-title">${$(this).text()}</textarea>`);
 	$('.edit-title').focus();
 };
+
 
 function editTask() {
 	var article = $(this).closest('article');
@@ -204,8 +224,10 @@ function sendToLocalStorage() {
 function getStoredCards() {
 	var retrievedCards = JSON.parse(localStorage.getItem("storedCards")) || [];
 	retrievedCards.forEach(function (retrievedCard) {
-		var taskCard = new TaskCard(retrievedCard.title, retrievedCard.task, retrievedCard.id, retrievedCard.importance);
-		$('section').append(populateCard(taskCard)); 
+		var taskCard = new TaskCard(retrievedCard.title, retrievedCard.task, retrievedCard.id, retrievedCard.importance, retrievedCard.complete);
+		$('section').append(populateCard(taskCard));
+
+		}
 	});
 };
 
@@ -229,11 +251,6 @@ function realtimeSearch() {
 	});
 };
 
-function completeBtn(e) {
-	e.preventDefault();
-	$(this).closest('article').wrap("<del>");
-	sendToLocalStorage();
-};
 
 function translateImportance(buttonClass) {
 	var importanceClicked;
@@ -252,6 +269,14 @@ function translateImportance(buttonClass) {
 	}
 	return importanceClicked;
 	} 
+	
+
+function displayComplete(buttonClass) {
+	console.log('hi')
+	if (data-status === true) {
+		return data-status;
+	}
+}
 
 
 function importanceSearch(e) { 
@@ -266,6 +291,7 @@ function importanceSearch(e) {
 		};
 	});
 };
+
 
 
 
