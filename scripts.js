@@ -136,7 +136,7 @@ function populateCard(taskCard) {
 							<img src="assets/downvote.svg">
 						</div>
 					</button>
-					<h5 class="importance">importance: <span data-importance="${taskCard.importance}" class="importance-span">${newImportance}</span></h5>
+					<h5 class="importance">Importance: <span data-importance="${taskCard.importance}" class="importance-span">${newImportance}</span></h5>
 					<button class="completed-task">Completed Task</button>
 				</div>
 				<hr>
