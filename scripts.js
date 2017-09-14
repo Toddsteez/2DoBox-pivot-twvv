@@ -227,9 +227,9 @@ function getStoredCards() {
 		var taskCard = new TaskCard(retrievedCard.title, retrievedCard.task, retrievedCard.id, retrievedCard.importance, retrievedCard.complete);
 		$('section').append(populateCard(taskCard));
 
-		}
-	});
-};
+		})
+	};
+
 
 //resets inpus and focus after save
 function resetHeader() {
@@ -291,6 +291,8 @@ function importanceSearch(e) {
 		};
 	});
 };
+
+
 
 
 
