@@ -265,7 +265,7 @@ function translateImportance(buttonClass) {
 	} 	else if (buttonClass === 'noneBtn') {
 		importanceClicked = 4;
 	}	else if (buttonClass === 'displayBtn') {
-		imprtanceClicked = (0, 1, 2, 3, 4)
+		importanceClicked = (0, 1, 2, 3, 4)
 	}
 	return importanceClicked;
 	} 
@@ -275,8 +275,8 @@ function displayComplete(buttonClass) {
 	console.log('hi')
 	if (data-status === true) {
 		return data-status;
-	}
-}
+	} 
+} 
 
 
 function importanceSearch(e) { 
